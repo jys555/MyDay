@@ -1,0 +1,13 @@
+{
+  "name": "myday-monorepo",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "echo \"Run dev in frontend and backend separately\"",
+    "lint": "echo \"Add root linting or run per-package linters\""
+  }
+}
+
