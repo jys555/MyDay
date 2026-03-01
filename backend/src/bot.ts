@@ -8,7 +8,7 @@ export const bot = new TelegramBot(env.TELEGRAM_BOT_TOKEN, {
 
 const WEBAPP_URL = env.TELEGRAM_BOT_WEBAPP_URL;
 
-bot.onText(/\/start/, async (msg) => {
+bot.onText(/\/start/, async (msg: TelegramBot.Message) => {
   const chatId = msg.chat.id.toString();
   const from = msg.from;
 
