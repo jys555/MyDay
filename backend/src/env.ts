@@ -9,7 +9,8 @@ export const env = {
   TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN ?? "",
   TELEGRAM_BOT_WEBAPP_URL: process.env.TELEGRAM_BOT_WEBAPP_URL ?? "",
   TELEGRAM_BOT_SECRET: process.env.TELEGRAM_BOT_SECRET ?? "",
-  CORS_ORIGIN: process.env.CORS_ORIGIN ?? "*"
+  // CORS_ORIGIN is optional - defaults to "*" if not set
+  CORS_ORIGIN: process.env.CORS_ORIGIN || "*"
 };
 
 if (!env.DATABASE_URL) {
