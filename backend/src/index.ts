@@ -14,7 +14,7 @@ const app = express();
 app.use(helmet());
 app.use(
   cors({
-    origin: env.CORS_ORIGIN === "*" ? true : env.CORS_ORIGIN.split(","),
+    origin: env.TELEGRAM_BOT_WEBAPP_URL || "*",
     credentials: true
   })
 );
