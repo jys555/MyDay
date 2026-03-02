@@ -9,8 +9,8 @@ datasource db {
 
 model User {
   id         Int      @id @default(autoincrement())
-  telegramId BigInt   @unique
-  username   String?  
+  telegramId String   @unique
+  username   String?
   firstName  String?
   chatId     String?  @db.VarChar(64)
   timezone   String   @default("Asia/Tashkent")
