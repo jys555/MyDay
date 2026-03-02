@@ -26,7 +26,22 @@ tasksRouter.get("/", async (req, res) => {
 
 tasksRouter.post("/", async (req, res) => {
   const userId = (req as any).userId as number;
-  const { title, description, status, priority, dueAt, tagIds } = req.body;
+  const {
+    title,
+    description,
+    status,
+    priority,
+    dueAt,
+    tagIds,
+    kind,
+    repeatDays,
+    timeOfDay,
+    goalType,
+    goalMinutes,
+    goalReps,
+    icon,
+    color
+  } = req.body;
 
   if (!title) {
     return res.status(400).json({ error: "Title is required" });
@@ -40,6 +55,14 @@ tasksRouter.post("/", async (req, res) => {
       status,
       priority,
       dueAt: dueAt ? new Date(dueAt) : null,
+      kind,
+      repeatDays,
+      timeOfDay,
+      goalType,
+      goalMinutes,
+      goalReps,
+      icon,
+      color,
       taskTags: tagIds
         ? {
             createMany: {
@@ -57,7 +80,22 @@ tasksRouter.post("/", async (req, res) => {
 tasksRouter.patch("/:id", async (req, res) => {
   const userId = (req as any).userId as number;
   const id = parseInt(req.params.id, 10);
-  const { title, description, status, priority, dueAt, tagIds } = req.body;
+  const {
+    title,
+    description,
+    status,
+    priority,
+    dueAt,
+    tagIds,
+    kind,
+    repeatDays,
+    timeOfDay,
+    goalType,
+    goalMinutes,
+    goalReps,
+    icon,
+    color
+  } = req.body;
 
   const existing = await prisma.task.findFirst({ where: { id, userId } });
   if (!existing) {
@@ -72,6 +110,14 @@ tasksRouter.patch("/:id", async (req, res) => {
       status,
       priority,
       dueAt: dueAt ? new Date(dueAt) : null,
+      kind,
+      repeatDays,
+      timeOfDay,
+      goalType,
+      goalMinutes,
+      goalReps,
+      icon,
+      color,
       ...(Array.isArray(tagIds)
         ? {
             taskTags: {

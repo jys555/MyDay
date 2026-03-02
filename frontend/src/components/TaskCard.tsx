@@ -9,6 +9,13 @@ export interface Task {
   status: "todo" | "doing" | "done";
   priority: "low" | "medium" | "high";
   dueAt?: string | null;
+  kind?: "regular" | "one_time";
+  timeOfDay?: "anytime" | "morning" | "afternoon" | "evening";
+  goalType?: "off" | "duration" | "repeat";
+  goalMinutes?: number | null;
+  goalReps?: number | null;
+  icon?: string | null;
+  color?: string | null;
 }
 
 interface Props {
@@ -16,14 +23,21 @@ interface Props {
   onToggleDone?: () => void;
   onEdit?: () => void;
   onDelete?: () => void;
+  showGoalActions?: boolean;
 }
 
-export const TaskCard: React.FC<Props> = ({ task, onToggleDone, onEdit, onDelete }) => {
+export const TaskCard: React.FC<Props> = ({
+  task,
+  onToggleDone,
+  onEdit,
+  onDelete,
+  showGoalActions
+}) => {
   const isOverdue =
     task.dueAt && task.status !== "done" && dayjs(task.dueAt).isBefore(dayjs(), "minute");
 
   return (
-    <div className="mb-3 rounded-2xl bg-white/5 border border-white/10 p-3 flex gap-3">
+    <div className="mb-3 rounded-2xl bg-gradient-to-r from-sky-500/60 to-sky-600/60 border border-white/10 p-3 flex gap-3">
       <button
         onClick={onToggleDone}
         className={clsx(
@@ -42,6 +56,7 @@ export const TaskCard: React.FC<Props> = ({ task, onToggleDone, onEdit, onDelete
                 task.status === "done" ? "line-through text-gray-400" : ""
               )}
             >
+              <span className="mr-1">{task.icon ?? "✅"}</span>
               {task.title}
             </h3>
             {task.description && (
@@ -70,12 +85,44 @@ export const TaskCard: React.FC<Props> = ({ task, onToggleDone, onEdit, onDelete
             {dayjs(task.dueAt).format("DD MMM, HH:mm")}
           </p>
         )}
-        <div className="flex gap-3 mt-2 text-[11px] text-gray-400">
-          <button onClick={onEdit}>Edit</button>
-          <button onClick={onDelete} className="text-red-400">
-            Delete
-          </button>
+        <div className="flex gap-3 mt-2 text-[11px] text-gray-200 justify-between items-center">
+          <div className="flex gap-3">
+            <button onClick={onEdit}>Edit</button>
+            <button onClick={onDelete} className="text-red-200">
+              Delete
+            </button>
+          </div>
+          {task.kind === "regular" && task.timeOfDay && (
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-black/20 uppercase tracking-wide">
+              {task.timeOfDay}
+            </span>
+          )}
         </div>
+
+        {showGoalActions && task.status !== "done" && (
+          <div className="mt-2 flex gap-2">
+            {task.goalType === "duration" && (
+              <>
+                <button className="flex-1 rounded-xl bg-black/20 py-1.5 text-[11px]">
+                  Timer {task.goalMinutes ? `· ${task.goalMinutes} min` : ""}
+                </button>
+                <button className="flex-1 rounded-xl bg-emerald-400 text-black py-1.5 text-[11px] font-semibold">
+                  Finish
+                </button>
+              </>
+            )}
+            {task.goalType === "repeat" && (
+              <>
+                <button className="flex-1 rounded-xl bg-black/20 py-1.5 text-[11px]">
+                  Finish 1 rep
+                </button>
+                <button className="flex-1 rounded-xl bg-emerald-400 text-black py-1.5 text-[11px] font-semibold">
+                  Finish all
+                </button>
+              </>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

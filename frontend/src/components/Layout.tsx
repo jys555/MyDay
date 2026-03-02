@@ -4,9 +4,9 @@ import { clsx } from "clsx";
 
 const tabs = [
   { to: "/today", label: "Today" },
-  { to: "/week", label: "Week" },
-  { to: "/tasks", label: "Tasks" },
-  { to: "/settings", label: "Settings" }
+  { to: "/habits", label: "Habits" },
+  { to: "/history", label: "History" },
+  { to: "/me", label: "Me" }
 ];
 
 export const Layout: React.FC<{ children: React.ReactNode; onAdd?: () => void }> = ({

@@ -30,8 +30,9 @@ const AppRoutes: React.FC = () => {
       <Route path="/" element={<Navigate to="/today" replace />} />
       <Route path="/today" element={<TodayPage />} />
       <Route path="/week" element={<WeekPage />} />
-      <Route path="/tasks" element={<TasksPage />} />
-      <Route path="/settings" element={<SettingsPage />} />
+      <Route path="/habits" element={<TasksPage />} />
+      <Route path="/history" element={<WeekPage />} />
+      <Route path="/me" element={<SettingsPage />} />
       <Route path="*" element={<Navigate to="/today" replace />} />
     </Routes>
   );
