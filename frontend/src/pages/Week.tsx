@@ -13,20 +13,45 @@ export const WeekPage: React.FC = () => {
 
   async function load() {
     setLoading(true);
-    const res = await api.get("/tasks");
-    const all = res.data.tasks as Task[];
-    const start = dayjs().startOf("week");
-    const end = dayjs().endOf("week");
-    const weekTasks = all.filter(
-      (t) => t.dueAt && dayjs(t.dueAt).isAfter(start) && dayjs(t.dueAt).isBefore(end)
-    );
-    setTasks(weekTasks);
-    setLoading(false);
+    try {
+      const res = await api.get("/tasks");
+      const all = res.data.tasks as Task[];
+      const start = dayjs().startOf("week");
+      const end = dayjs().endOf("week");
+      const weekTasks = all.filter(
+        (t) => t.dueAt && dayjs(t.dueAt).isAfter(start) && dayjs(t.dueAt).isBefore(end)
+      );
+      setTasks(weekTasks);
+    } catch (e) {
+      console.error("Failed to load tasks:", e);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
     void load();
   }, []);
+
+  async function handleToggleDone(task: Task) {
+    const nextStatus = task.status === "done" ? "todo" : "done";
+    try {
+      await api.patch(`/tasks/${task.id}`, { status: nextStatus });
+      await load();
+    } catch (e) {
+      console.error("Failed to update task:", e);
+    }
+  }
+
+  async function handleDelete(taskId: number) {
+    if (!confirm("Delete this task?")) return;
+    try {
+      await api.delete(`/tasks/${taskId}`);
+      await load();
+    } catch (e) {
+      console.error("Failed to delete task:", e);
+    }
+  }
 
   return (
     <Layout>
@@ -36,7 +61,12 @@ export const WeekPage: React.FC = () => {
         <p className="text-xs text-gray-400">No tasks planned for this week yet.</p>
       )}
       {tasks.map((task) => (
-        <TaskCard key={task.id} task={task} />
+        <TaskCard
+          key={task.id}
+          task={task}
+          onToggleDone={() => void handleToggleDone(task)}
+          onDelete={() => void handleDelete(task.id)}
+        />
       ))}
     </Layout>
   );
