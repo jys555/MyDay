@@ -4,7 +4,7 @@ import WebApp from "@twa-dev/sdk";
 
 export interface User {
   id: number;
-  telegramId: number;
+  telegramId: string;
   username?: string | null;
   firstName?: string | null;
   timezone: string;

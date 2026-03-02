@@ -22,7 +22,7 @@ authRouter.post("/telegram", async (req, res) => {
     return res.json({
       user: {
         id: user.id,
-        telegramId: user.telegramId,
+        telegramId: user.telegramId.toString(),
         username: user.username,
         firstName: user.firstName,
         timezone: user.timezone,

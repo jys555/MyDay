@@ -63,8 +63,9 @@ export function verifyTelegramInitData(initData: URLSearchParams): TelegramAuthP
 }
 
 export async function findOrCreateUserFromTelegram(auth: TelegramAuthPayload) {
+  const telegramId = BigInt(auth.id);
   const existing = await prisma.user.findUnique({
-    where: { telegramId: auth.id }
+    where: { telegramId }
   });
 
   if (existing) {
@@ -79,7 +80,7 @@ export async function findOrCreateUserFromTelegram(auth: TelegramAuthPayload) {
 
   return prisma.user.create({
     data: {
-      telegramId: auth.id,
+      telegramId,
       username: auth.username,
       firstName: auth.first_name
     }

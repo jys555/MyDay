@@ -15,14 +15,14 @@ bot.onText(/\/start/, async (msg: TelegramBot.Message) => {
   if (!from) return;
 
   await prisma.user.upsert({
-    where: { telegramId: from.id },
+    where: { telegramId: BigInt(from.id) },
     update: {
       chatId,
       username: from.username ?? undefined,
       firstName: from.first_name ?? undefined
     },
     create: {
-      telegramId: from.id,
+      telegramId: BigInt(from.id),
       chatId,
       username: from.username,
       firstName: from.first_name
